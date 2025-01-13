@@ -21,3 +21,17 @@ class Redactor(AbstractUser):
     class Meta:
         ordering = ["username"]
 
+
+class Newspaper(models.Model):
+    title = models.CharField(max_length=256, unique=True)
+    content = models.TextField()
+    published_date = models.DateTimeField(auto_now_add=True)
+    topics = models.ManyToManyField(Topic, related_name="newspapers")
+    publishers = models.ManyToManyField(Redactor, related_name="newspapers")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["title"]
+
