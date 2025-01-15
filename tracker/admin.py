@@ -16,3 +16,8 @@ class TopicAdmin(admin.ModelAdmin):
 @admin.register(Redactor)
 class RedactorAdmin(UserAdmin):
     pass
+
+
+@admin.register(Newspaper)
+class NewspaperAdmin(admin.ModelAdmin):
+    pass
