@@ -2,5 +2,14 @@
 
 
 {% block content %}
-<h1>News agency <strong></strong></h1>
+  <h1>News agency <strong></strong></h1>
+  <br>
+  <p>In our news agency we have:</p>
+  <ul class="custom-class">
+  <li>{{ num_topics }}+ Topics</li>
+  <li>{{ num_redactors }}+ Redactors</li>
+  <li>{{ num_newspapers }}+ newspapers</li>
+  </ul>
+  <br>
+  <p>You have visited the page {{ num_visits }} time{{ num_visits|pluralize }}</p>
 {% endblock %}
