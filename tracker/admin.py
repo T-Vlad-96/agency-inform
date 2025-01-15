@@ -11,3 +11,8 @@ from tracker.models import (
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Redactor)
+class RedactorAdmin(UserAdmin):
+    pass
