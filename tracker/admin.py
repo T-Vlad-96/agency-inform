@@ -10,7 +10,9 @@ from tracker.models import (
 
 @admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("id", "name")
+    search_fields = ("name",)
+    ordering = ("id",)
 
 
 @admin.register(Redactor)
