@@ -17,7 +17,36 @@ class TopicAdmin(admin.ModelAdmin):
 
 @admin.register(Redactor)
 class RedactorAdmin(UserAdmin):
-    pass
+    list_display = (
+        "id",
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "years_of_experience",
+    )
+    search_fields = ("username",)
+    ordering = ("id",)
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "years_of_experience",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+    )
+    fieldsets = UserAdmin.fieldsets + (
+        ("Experience", {"fields": ("years_of_experience",)}),
+    )
 
 
 @admin.register(Newspaper)
