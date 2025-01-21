@@ -34,4 +34,3 @@ class Newspaper(models.Model):
 
     class Meta:
         ordering = ["title"]
-

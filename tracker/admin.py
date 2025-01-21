@@ -51,4 +51,25 @@ class RedactorAdmin(UserAdmin):
 
 @admin.register(Newspaper)
 class NewspaperAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        "id",
+        "title",
+        "get_topics",
+        "get_publishers",
+        "published_date"
+    )
+
+    search_fields = ("title",)
+    list_filter = ("topics",)
+    ordering = ("id",)
+
+    def get_topics(self, obj):
+        return ", ".join([topic.name for topic in obj.topics.all()])
+
+    def get_publishers(self, obj):
+        return ", ".join(
+            [
+                f"{publisher.first_name} {publisher.last_name}"
+                for publisher in obj.publishers.all()
+            ]
+        )
