@@ -27,3 +27,8 @@ class RedactorAdminTests(TestCase):
         response = self.client.get(url)
         self.assertContains(response, self.user_redactor.years_of_experience)
 
+    def test_redactor_experience_in_add_fieldsets(self):
+        url = reverse("admin:tracker_redactor_add")
+        response = self.client.get(url)
+        self.assertContains(response, self.user_redactor.years_of_experience)
+
