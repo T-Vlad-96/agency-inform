@@ -17,14 +17,7 @@ class TopicAdmin(admin.ModelAdmin):
 
 @admin.register(Redactor)
 class RedactorAdmin(UserAdmin):
-    list_display = (
-        "id",
-        "username",
-        "first_name",
-        "last_name",
-        "email",
-        "years_of_experience",
-    )
+    list_display = ("id", ) + UserAdmin.list_display + ("years_of_experience", )
     search_fields = ("username",)
     ordering = ("id",)
     add_fieldsets = (
