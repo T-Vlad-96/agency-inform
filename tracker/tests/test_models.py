@@ -58,4 +58,10 @@ class NewspaperModelTest(TestCase):
     def test_newspaper_ordering(self):
         self.assertEqual(Newspaper._meta.ordering, ["title"])
 
-
+    def test_newspaper_object_title_is_unique(self):
+        newspaper2 = Newspaper(
+            title="test_title",
+            content="test_content2",
+        )
+        with self.assertRaises(ValidationError):
+            newspaper2.full_clean()
