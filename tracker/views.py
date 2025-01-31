@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -24,3 +25,8 @@ def index(request: HttpRequest) -> HttpResponse:
 class TopicListView(ListView):
     model = Topic
     paginate_by = 5
+
+class TopicCreateView(CreateView):
+    model = Topic
+    fields = "__all__"
+    success_url = reverse_lazy("tracker:topic_list")
