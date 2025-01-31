@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -18,3 +19,8 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_visits": num_visits,
     }
     return render(request, "tracker/index.html", context=context)
+
+
+class TopicListView(ListView):
+    model = Topic
+    paginate_by = 5
