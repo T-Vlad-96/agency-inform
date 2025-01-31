@@ -1,3 +1,7 @@
 .none_style_list {
     list-style: none;
 }
+
+.centered {
+    text-align: center;
+}

@@ -95,3 +95,8 @@ class NewspaperListView(ListView):
     model = Newspaper
     paginate_by = 3
 
+
+class NewspaperDetailView(DetailView):
+    model = Newspaper
+
+

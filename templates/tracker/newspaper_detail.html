@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>{{ newspaper }}</h1>
+  <br>
+  <ul class="none_style_list">
+    <li>
+      <strong>Title: </strong>
+      {{ newspaper.title }}
+    </li>
+    <li>
+      <strong>published date: </strong>
+      {{ newspaper.published_date }}
+    </li>
+    <li>
+      <strong>Topics: </strong>
+      {% for topic in newspaper.topics.all %}{{ topic }}; {% endfor %}
+    </li>
+    <li>
+      <strong>Publishers: </strong>
+      {% for publisher in newspaper.publishers.all %}{{ publisher }}; {% endfor %}
+    </li>
+  </ul>
+  <hr>
+  <h3 class="centered">Content</h3>
+  {{ newspaper.content|linebreaks }}
+{% endblock %}
