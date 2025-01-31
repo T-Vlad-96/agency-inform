@@ -10,6 +10,8 @@ from tracker.views import (
     RedactorListView,
     RedactorDetailView,
     RedactorUpdateView,
+    RedactorCreateView,
+
 )
 
 urlpatterns = [
@@ -25,6 +27,7 @@ urlpatterns = [
     path("redactors/", RedactorListView.as_view(), name="redactor_list"),
     path("redactor/<int:pk>/", RedactorDetailView.as_view(), name="redactor_detail"),
     path("redactor/update/<int:pk>/", RedactorUpdateView.as_view(), name="redactor_update"),
+    path("redactor/create/", RedactorCreateView.as_view(), name="redactor_create"),
 ]
 
 app_name = "tracker"

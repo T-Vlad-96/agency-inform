@@ -68,3 +68,16 @@ class RedactorUpdateView(UpdateView):
         "years_of_experience",
     )
     success_url = reverse_lazy("tracker:redactor_list")
+
+
+class RedactorCreateView(CreateView):
+    model = Redactor
+    fields = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "years_of_experience",
+    )
+    success_url = reverse_lazy("tracker:redactor_list")
+
