@@ -46,4 +46,16 @@ class RedactorModelTest(TestCase):
 
 
 class NewspaperModelTest(TestCase):
-    pass
+    def setUp(self):
+        self.newspaper = Newspaper.objects.create(
+            title="test_title",
+            content="test_content",
+        )
+
+    def test_newspaper_str(self):
+        self.assertEqual(str(self.newspaper), "test_title")
+
+    def test_newspaper_ordering(self):
+        self.assertEqual(Newspaper._meta.ordering, ["title"])
+
+
