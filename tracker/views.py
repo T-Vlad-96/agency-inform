@@ -81,3 +81,9 @@ class RedactorCreateView(CreateView):
     )
     success_url = reverse_lazy("tracker:redactor_list")
 
+
+class RedactorDeleteView(DeleteView):
+    model = Redactor
+    template_name = "tracker/redactor_delete_confirm.html"
+    success_url = reverse_lazy("tracker:redactor_list")
+

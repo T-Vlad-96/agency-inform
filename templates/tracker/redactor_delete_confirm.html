@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>Delete the redactor '{{ redactor }}' ?</h1>
+  <form action="" method="post">
+  {% csrf_token %}
+  <input
+
+      type="submit"
+      value="Delete"
+      class="btn btn-danger"
+  >
+  <input
+      type="button"
+      value="Cancel"
+      class="btn btn-secondary"
+      onclick="history.back()"
+  >
+  </form>
+{% endblock %}

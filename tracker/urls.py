@@ -11,6 +11,7 @@ from tracker.views import (
     RedactorDetailView,
     RedactorUpdateView,
     RedactorCreateView,
+    RedactorDeleteView,
 
 )
 
@@ -28,6 +29,7 @@ urlpatterns = [
     path("redactor/<int:pk>/", RedactorDetailView.as_view(), name="redactor_detail"),
     path("redactor/update/<int:pk>/", RedactorUpdateView.as_view(), name="redactor_update"),
     path("redactor/create/", RedactorCreateView.as_view(), name="redactor_create"),
+    path("redactor/delete/<int:pk>/", RedactorDeleteView.as_view(), name="redactor_delete"),
 ]
 
 app_name = "tracker"
