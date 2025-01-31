@@ -7,7 +7,8 @@ from tracker.views import (
     TopicCreateView,
     TopicUpdateView,
     TopicDeleteView,
-    RedactorListView
+    RedactorListView,
+    RedactorDetailView,
 )
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     path("topic/delete/<int:pk>/", TopicDeleteView.as_view(), name="topic_delete"),
 
     path("redactors/", RedactorListView.as_view(), name="redactor_list"),
+    path("redactors/<int:pk>/", RedactorDetailView.as_view(), name="redactor_detail"),
 ]
 
 app_name = "tracker"

@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -47,4 +47,7 @@ class TopicDeleteView(DeleteView):
 class RedactorListView(ListView):
     model = Redactor
     paginate_by = 5
+
+class RedactorDetailView(DetailView):
+    model = Redactor
 

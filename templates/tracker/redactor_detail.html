@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>The redactor '{{ redactor.username }}' detail page</h1>
+  <br>
+  <ul class="none_style_list">
+    <li>
+      <strong>Full name: </strong>
+      {{ redactor.first_name }} {{ redactor.last_name }}
+    </li>
+    <li>
+      <strong>Email: </strong>
+      {{ redactor.email }}
+    </li>
+    <li>
+      <strong>years of experience: </strong>
+      {{ redactor.years_of_experience }}
+    </li>
+  </ul>
+  <hr>
+  <h3>The articles of the redactor '{{ redactor.username }}'</h3>
+  <ol>
+    {% for article in redactor.newspapers.all %}
+      <li>
+        <strong>Title: </strong>
+        {{ article.title }} (published {{ article.published_date|date:"Y-m-d" }})
+      </li>
+    {% endfor %}
+  </ol>
+{% endblock %}
