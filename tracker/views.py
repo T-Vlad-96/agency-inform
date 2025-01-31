@@ -21,6 +21,7 @@ def index(request: HttpRequest) -> HttpResponse:
     }
     return render(request, "tracker/index.html", context=context)
 
+# The Topic model views
 
 class TopicListView(ListView):
     model = Topic
@@ -40,3 +41,10 @@ class TopicDeleteView(DeleteView):
     model = Topic
     template_name = "tracker/topic_delete_confirm.html"
     success_url = reverse_lazy("tracker:topic_list")
+
+# The Redactor model views
+
+class RedactorListView(ListView):
+    model = Redactor
+    paginate_by = 5
+
