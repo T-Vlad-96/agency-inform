@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>Newspaper list</h1>
+  <br>
+  <table class="table">
+    <tr>
+      <th>Title</th>
+      <th>Topics</th>
+      <th>Published date</th>
+    </tr>
+    {% for newspaper in newspaper_list %}
+      <tr>
+        <td>{{ newspaper.title }}</td>
+        <td>{% for topic in newspaper.topics.all %}{{ topic }}; {% endfor %}</td>
+        <td>{{ newspaper.published_date|date:"Y-m-d" }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

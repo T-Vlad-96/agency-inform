@@ -87,3 +87,11 @@ class RedactorDeleteView(DeleteView):
     template_name = "tracker/redactor_delete_confirm.html"
     success_url = reverse_lazy("tracker:redactor_list")
 
+
+# *** The Newspaper model views ***
+
+
+class NewspaperListView(ListView):
+    model = Newspaper
+    paginate_by = 3
+
