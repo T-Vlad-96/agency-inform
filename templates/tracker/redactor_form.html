@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h1>Redactor {{ object|yesno:"Update,Create" }}</h1>
+  <br>
+  <form action="" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input
+      type="submit"
+      value="{{ object|yesno:'Update,Create' }}"
+      class="btn btn-success"
+  >
+  <input
+      type="button"
+      value="Cancel"
+      onClick="history.back()"
+      class="btn btn-primary"
+  >
+  </form>
+{% endblock %}

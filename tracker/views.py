@@ -21,33 +21,50 @@ def index(request: HttpRequest) -> HttpResponse:
     }
     return render(request, "tracker/index.html", context=context)
 
-# The Topic model views
+
+# *** The Topic model views ***
 
 class TopicListView(ListView):
     model = Topic
     paginate_by = 5
+
 
 class TopicCreateView(CreateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("tracker:topic_list")
 
+
 class TopicUpdateView(UpdateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("tracker:topic_list")
+
 
 class TopicDeleteView(DeleteView):
     model = Topic
     template_name = "tracker/topic_delete_confirm.html"
     success_url = reverse_lazy("tracker:topic_list")
 
-# The Redactor model views
+
+# *** The Redactor model views ***
 
 class RedactorListView(ListView):
     model = Redactor
     paginate_by = 5
 
+
 class RedactorDetailView(DetailView):
     model = Redactor
 
+
+class RedactorUpdateView(UpdateView):
+    model = Redactor
+    fields = (
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "years_of_experience",
+    )
+    success_url = reverse_lazy("tracker:redactor_list")
