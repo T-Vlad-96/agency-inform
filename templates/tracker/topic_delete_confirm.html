@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h3>Delete the topic <strong>{{ topic }}</strong> ?</h3>
+  <br>
+  <form action="" method="post">
+  {% csrf_token %}
+  <input
+      type="submit"
+      value="Yes"
+      class="btn btn-danger"
+  >
+  <input type="button"
+         value="cancel"
+         onclick="history.back()"
+         class="btn btn-primary"
+  >
+  </form>
+{% endblock %}

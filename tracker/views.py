@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -34,4 +34,9 @@ class TopicCreateView(CreateView):
 class TopicUpdateView(UpdateView):
     model = Topic
     fields = "__all__"
+    success_url = reverse_lazy("tracker:topic_list")
+
+class TopicDeleteView(DeleteView):
+    model = Topic
+    template_name = "tracker/topic_delete_confirm.html"
     success_url = reverse_lazy("tracker:topic_list")
