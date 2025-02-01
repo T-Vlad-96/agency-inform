@@ -111,3 +111,9 @@ class NewspaperCreateView(CreateView):
     fields = "__all__"
     success_url = reverse_lazy("tracker:newspaper_list")
 
+
+class NewspaperDeleteView(DeleteView):
+    model = Newspaper
+    template_name = "tracker/newspaper_delete_confirm.html"
+    success_url = reverse_lazy("tracker:newspaper_list")
+
