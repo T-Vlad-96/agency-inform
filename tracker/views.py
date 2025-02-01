@@ -105,3 +105,9 @@ class NewspaperUpdateView(UpdateView):
     fields = "__all__"
     success_url = reverse_lazy("tracker:newspaper_list")
 
+
+class NewspaperCreateView(CreateView):
+    model = Newspaper
+    fields = "__all__"
+    success_url = reverse_lazy("tracker:newspaper_list")
+
