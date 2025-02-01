@@ -1,3 +1,4 @@
+{% load static %}
 {% if is_paginated %}
   <ul class="pagination">
     {% if page_obj.has_previous %}
@@ -22,4 +23,15 @@
       </li>
     {% endif %}
   </ul>
+  <form method="GET">
+    <label for="page_number">Go to page: </label>
+    <input
+        type="number"
+        id="page_number"
+        name="page"
+        min="1"
+        max="{{ page_obj.paginator.num_pages }}"
+    >
+    <input type="submit" value="Go">
+  </form>
 {% endif %}
