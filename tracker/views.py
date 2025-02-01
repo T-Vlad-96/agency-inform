@@ -100,3 +100,8 @@ class NewspaperDetailView(DetailView):
     model = Newspaper
 
 
+class NewspaperUpdateView(UpdateView):
+    model = Newspaper
+    fields = "__all__"
+    success_url = reverse_lazy("tracker:newspaper_list")
+
