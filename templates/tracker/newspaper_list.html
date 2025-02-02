@@ -12,7 +12,11 @@
     </tr>
     {% for newspaper in newspaper_list %}
       <tr>
-        <td>{{ newspaper.title }}</td>
+        <td>
+          <a href="{% url 'tracker:newspaper_detail' newspaper.id %}">
+            {{ newspaper.title }}
+          </a>
+        </td>
         <td>{% for topic in newspaper.topics.all %}{{ topic }}; {% endfor %}</td>
         <td>{{ newspaper.published_date|date:"Y-m-d" }}</td>
       </tr>
