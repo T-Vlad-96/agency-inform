@@ -11,7 +11,11 @@
     </tr>
     {% for redactor in redactor_list %}
       <tr>
-        <td>{{ redactor.username }}</td>
+        <td>
+          <a href="{% url 'tracker:redactor_detail' redactor.id %}">
+            {{ redactor.username }}
+          </a>
+        </td>
         <td>{{ redactor.years_of_experience }}</td>
       </tr>
     {% endfor %}
