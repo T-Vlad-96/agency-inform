@@ -5,3 +5,8 @@
 .centered {
     text-align: center;
 }
+
+.no_border_no_padding {
+    border: none;
+    padding: 0;
+}

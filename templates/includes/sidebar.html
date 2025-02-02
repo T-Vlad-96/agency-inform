@@ -1,4 +1,21 @@
 <ul class="list-group">
+  {% if user.is_authenticated %}
+    <li class="list-group-item">
+      <a href="{% url 'tracker:redactor_detail' user.id %}">{{ user }}</a>
+    <li class="list-group-item">
+      <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit"
+               class="list-group-item no_border_no_padding"
+               value="Logout"
+        >
+      </form>
+    </li>
+  {% else %}
+    <li class="list-group-item">
+      <a href="{% url 'login' %}">Login</a>
+    </li>
+  {% endif %}
   <li class="list-group-item">
     <a href="{% url 'tracker:index' %}">Home</a>
   </li>
