@@ -19,7 +19,11 @@
     </li>
     <li>
       <strong>Publishers: </strong>
-      {% for publisher in newspaper.publishers.all %}{{ publisher }}; {% endfor %}
+      {% for publisher in newspaper.publishers.all %}
+        <a href="{% url 'tracker:redactor_detail' publisher.id %}">
+          {{ publisher }};
+        </a>
+      {% endfor %}
     </li>
   </ul>
   <hr>
