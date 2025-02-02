@@ -95,6 +95,9 @@ class NewspaperListView(ListView):
     model = Newspaper
     paginate_by = 3
 
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related("topics", "publishers")
+
 
 class NewspaperDetailView(DetailView):
     model = Newspaper
