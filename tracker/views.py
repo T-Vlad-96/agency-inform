@@ -9,7 +9,7 @@ from django.views.generic import (
     DetailView,
 )
 from .forms import (
-    TopicSearchForm, RedactorSearchForm,
+    TopicSearchForm, RedactorSearchForm, NewspaperSearchForm,
 )
 
 
@@ -92,6 +92,7 @@ class RedactorListView(ListView):
             )
         return self.queryset
 
+
 class RedactorDetailView(DetailView):
     model = Redactor
 
@@ -132,9 +133,23 @@ class RedactorDeleteView(DeleteView):
 class NewspaperListView(ListView):
     model = Newspaper
     paginate_by = 3
+    search_form = NewspaperSearchForm
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = NewspaperSearchForm(self.request.GET)
+        return context
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("topics", "publishers")
+        self.queryset = super().get_queryset().prefetch_related(
+            "topics", "publishers"
+        )
+        search_form = NewspaperSearchForm(self.request.GET)
+        if search_form.is_valid():
+            return self.queryset.filter(
+                title__icontains=search_form.cleaned_data["title"]
+            )
+        return self.queryset
 
 
 class NewspaperDetailView(DetailView):
