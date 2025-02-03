@@ -1,7 +1,17 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+)
+from .forms import (
+    TopicSearchForm,
+)
+
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -27,7 +37,21 @@ def index(request: HttpRequest) -> HttpResponse:
 class TopicListView(ListView):
     model = Topic
     paginate_by = 5
+    search_form = TopicSearchForm
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = TopicSearchForm(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        self.queryset = super().get_queryset()
+        search_form = TopicSearchForm(self.request.GET)
+        if search_form.is_valid():
+            return self.queryset.filter(
+                name__icontains=search_form.cleaned_data["name"]
+            )
+        return self.queryset
 
 class TopicCreateView(CreateView):
     model = Topic
