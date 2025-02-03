@@ -13,3 +13,16 @@ class TopicSearchForm(forms.Form):
         ),
 
     )
+
+
+class RedactorSearchForm(forms.Form):
+    username = forms.CharField(
+        label="",
+        required=False,
+        max_length=255,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Search by username",
+            }
+        )
+    )

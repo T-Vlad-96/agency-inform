@@ -9,7 +9,7 @@ from django.views.generic import (
     DetailView,
 )
 from .forms import (
-    TopicSearchForm,
+    TopicSearchForm, RedactorSearchForm,
 )
 
 
@@ -76,7 +76,21 @@ class TopicDeleteView(DeleteView):
 class RedactorListView(ListView):
     model = Redactor
     paginate_by = 5
+    search_form = RedactorSearchForm
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = RedactorSearchForm(self.request.GET)
+        return context
+
+    def get_queryset(self):
+        self.queryset = super().get_queryset()
+        search_form = RedactorSearchForm(self.request.GET)
+        if search_form.is_valid():
+            return self.queryset.filter(
+                username__icontains=search_form.cleaned_data["username"]
+            )
+        return self.queryset
 
 class RedactorDetailView(DetailView):
     model = Redactor
