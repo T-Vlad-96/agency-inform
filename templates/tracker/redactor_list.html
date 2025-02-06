@@ -2,7 +2,10 @@
 
 
 {% block content %}
-  <h1>Redactors List</h1>
+  <h1>
+    Redactors List
+    <a href="{% url 'tracker:redactor_create' %}">+</a>
+  </h1>
   <form action="" method="get">
     {{ search_form }}
     <input type="submit" value="Search">

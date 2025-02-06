@@ -1,4 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+
+from tracker.models import Redactor
 
 
 class TopicSearchForm(forms.Form):
@@ -39,3 +42,9 @@ class NewspaperSearchForm(forms.Form):
             }
         )
     )
+
+
+class RedactorCreateForm(UserCreationForm):
+    class Meta:
+        model = Redactor
+        fields = UserCreationForm.Meta.fields + ("years_of_experience", )

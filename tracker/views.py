@@ -9,9 +9,11 @@ from django.views.generic import (
     DetailView,
 )
 from .forms import (
-    TopicSearchForm, RedactorSearchForm, NewspaperSearchForm,
+    TopicSearchForm,
+    RedactorSearchForm,
+    NewspaperSearchForm,
+    RedactorCreateForm,
 )
-
 
 from tracker.models import Topic, Redactor, Newspaper
 
@@ -52,6 +54,7 @@ class TopicListView(ListView):
                 name__icontains=search_form.cleaned_data["name"]
             )
         return self.queryset
+
 
 class TopicCreateView(CreateView):
     model = Topic
@@ -111,13 +114,7 @@ class RedactorUpdateView(UpdateView):
 
 class RedactorCreateView(CreateView):
     model = Redactor
-    fields = (
-        "username",
-        "first_name",
-        "last_name",
-        "email",
-        "years_of_experience",
-    )
+    form_class = RedactorCreateForm
     success_url = reverse_lazy("tracker:redactor_list")
 
 
@@ -172,4 +169,3 @@ class NewspaperDeleteView(DeleteView):
     model = Newspaper
     template_name = "tracker/newspaper_delete_confirm.html"
     success_url = reverse_lazy("tracker:newspaper_list")
-
