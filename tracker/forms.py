@@ -47,4 +47,9 @@ class NewspaperSearchForm(forms.Form):
 class RedactorCreateForm(UserCreationForm):
     class Meta:
         model = Redactor
-        fields = UserCreationForm.Meta.fields + ("years_of_experience", )
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "email",
+            "years_of_experience",
+        )
