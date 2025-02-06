@@ -10,3 +10,8 @@
     border: none;
     padding: 0;
 }
+
+.non_decorated_link {
+    text-underline: none;
+    color: inherit;
+}
