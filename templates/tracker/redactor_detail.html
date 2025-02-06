@@ -2,9 +2,16 @@
 
 
 {% block content %}
-  <h1>The redactor '{{ redactor.username }}' detail page</h1>
+  <h1>
+    The redactor '{{ redactor.username }}' detail page
+    <a
+        href="{% url 'tracker:redactor_update' pk=redactor.id %}"
+        class="non_decorated_link"
+    > ✏️</a>
+    <a href="{% url 'tracker:redactor_delete' pk=redactor.id %}"> 🗑</a>
+  </h1>
   <br>
-  <ul class="none_style_list">
+  <ul class="non_decorated_link">
     <li>
       <strong>Full name: </strong>
       {{ redactor.first_name }} {{ redactor.last_name }}
