@@ -3,24 +3,18 @@
 {% block content %}
   <br>
   <form action="" method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input
-      type="submit"
-      value="{{ object|yesno:'Update,Create' }}"
-      class="btn btn-primary"
-  >
-  <a
-      class="btn btn-danger"
-      href="{% url 'tracker:topic_delete' pk=topic.id %}"
-  >
-    Delete
-  </a>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input
+        type="submit"
+        value="{{ object|yesno:'Update,Create' }}"
+        class="btn btn-primary"
+    >
     <a
-      class="btn btn-secondary"
-      onclick=history.back()
-  >
-    Cancel
-  </a>
+        class="btn btn-secondary"
+        onclick=history.back()
+    >
+      Cancel
+    </a>
   </form>
 {% endblock %}

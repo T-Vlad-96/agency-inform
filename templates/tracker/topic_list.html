@@ -11,16 +11,18 @@
     <input type="submit" value="Search">
   </form>
   <br>
-  <ol>
+  <table class="table">
+    <tr>
+      <th>Topic name</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
     {% for topic in topic_list %}
-      <li>
-        <a
-            href="{% url 'tracker:topic_update' topic.id %}"
-            class="text-decoration-none"
-        >
-          {{ topic }}
-        </a>
-      </li>
+      <tr>
+        <td>{{ topic.name }}</td>
+        <td><a href="{% url 'tracker:topic_update' topic.id %}">Update</a></td>
+        <td><a href="{% url 'tracker:topic_delete' topic.id %}">Delete</a></td>
+      </tr>
     {% endfor %}
-  </ol>
+  </table>
 {% endblock %}
