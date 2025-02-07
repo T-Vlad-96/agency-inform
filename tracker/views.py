@@ -8,6 +8,8 @@ from django.views.generic import (
     DeleteView,
     DetailView,
 )
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import (
     TopicSearchForm,
     RedactorSearchForm,
@@ -18,6 +20,7 @@ from .forms import (
 from tracker.models import Topic, Redactor, Newspaper
 
 
+@login_required
 def index(request: HttpRequest) -> HttpResponse:
     num_topics = Topic.objects.all().count()
     num_redactors = Redactor.objects.all().count()
@@ -36,7 +39,7 @@ def index(request: HttpRequest) -> HttpResponse:
 
 # *** The Topic model views ***
 
-class TopicListView(ListView):
+class TopicListView(LoginRequiredMixin, ListView):
     model = Topic
     paginate_by = 5
     search_form = TopicSearchForm
@@ -56,19 +59,19 @@ class TopicListView(ListView):
         return self.queryset
 
 
-class TopicCreateView(CreateView):
+class TopicCreateView(LoginRequiredMixin, CreateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("tracker:topic_list")
 
 
-class TopicUpdateView(UpdateView):
+class TopicUpdateView(LoginRequiredMixin, UpdateView):
     model = Topic
     fields = "__all__"
     success_url = reverse_lazy("tracker:topic_list")
 
 
-class TopicDeleteView(DeleteView):
+class TopicDeleteView(LoginRequiredMixin, DeleteView):
     model = Topic
     template_name = "tracker/topic_delete_confirm.html"
     success_url = reverse_lazy("tracker:topic_list")
@@ -76,7 +79,7 @@ class TopicDeleteView(DeleteView):
 
 # *** The Redactor model views ***
 
-class RedactorListView(ListView):
+class RedactorListView(LoginRequiredMixin, ListView):
     model = Redactor
     paginate_by = 5
     search_form = RedactorSearchForm
@@ -96,11 +99,11 @@ class RedactorListView(ListView):
         return self.queryset
 
 
-class RedactorDetailView(DetailView):
+class RedactorDetailView(LoginRequiredMixin, DetailView):
     model = Redactor
 
 
-class RedactorUpdateView(UpdateView):
+class RedactorUpdateView(LoginRequiredMixin, UpdateView):
     model = Redactor
     fields = (
         "username",
@@ -112,13 +115,13 @@ class RedactorUpdateView(UpdateView):
     success_url = reverse_lazy("tracker:redactor_list")
 
 
-class RedactorCreateView(CreateView):
+class RedactorCreateView(LoginRequiredMixin, CreateView):
     model = Redactor
     form_class = RedactorCreateForm
     success_url = reverse_lazy("tracker:redactor_list")
 
 
-class RedactorDeleteView(DeleteView):
+class RedactorDeleteView(LoginRequiredMixin, DeleteView):
     model = Redactor
     template_name = "tracker/redactor_delete_confirm.html"
     success_url = reverse_lazy("tracker:redactor_list")
@@ -127,7 +130,7 @@ class RedactorDeleteView(DeleteView):
 # *** The Newspaper model views ***
 
 
-class NewspaperListView(ListView):
+class NewspaperListView(LoginRequiredMixin, ListView):
     model = Newspaper
     paginate_by = 3
     search_form = NewspaperSearchForm
@@ -149,23 +152,23 @@ class NewspaperListView(ListView):
         return self.queryset
 
 
-class NewspaperDetailView(DetailView):
+class NewspaperDetailView(LoginRequiredMixin, DetailView):
     model = Newspaper
 
 
-class NewspaperUpdateView(UpdateView):
-    model = Newspaper
-    fields = "__all__"
-    success_url = reverse_lazy("tracker:newspaper_list")
-
-
-class NewspaperCreateView(CreateView):
+class NewspaperUpdateView(LoginRequiredMixin, UpdateView):
     model = Newspaper
     fields = "__all__"
     success_url = reverse_lazy("tracker:newspaper_list")
 
 
-class NewspaperDeleteView(DeleteView):
+class NewspaperCreateView(LoginRequiredMixin, CreateView):
+    model = Newspaper
+    fields = "__all__"
+    success_url = reverse_lazy("tracker:newspaper_list")
+
+
+class NewspaperDeleteView(LoginRequiredMixin, DeleteView):
     model = Newspaper
     template_name = "tracker/newspaper_delete_confirm.html"
     success_url = reverse_lazy("tracker:newspaper_list")
