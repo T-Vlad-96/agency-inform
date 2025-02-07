@@ -2,7 +2,13 @@
 
 
 {% block content %}
-  <h1>Newspaper list</h1>
+  <h1>
+    Newspaper list
+  <a
+      href="{% url 'tracker:newspaper_create' %}"
+      class="text-decoration-none"
+  >+</a>
+  </h1>
   <form action="" method="get">
     {{ search_form }}
     <input type="submit" value="Search">

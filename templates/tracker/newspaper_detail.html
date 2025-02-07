@@ -2,7 +2,28 @@
 
 
 {% block content %}
-  <h1>{{ newspaper }}</h1>
+  <h1>
+    {{ newspaper }}
+    <a
+        href="{% url 'tracker:newspaper_update' pk=newspaper.id %}"
+        class="text-decoration-none"
+    >
+      ✏️
+    </a>
+    <a
+        href="{% url 'tracker:newspaper_delete' pk=newspaper.id %}"
+        class="text-decoration-none"
+    >
+      🗑
+    </a>
+  <button
+      type="button"
+      value="⬅️"
+      onclick=history.back()
+  >
+    ⬅️
+  </button>
+  </h1>
   <br>
   <ul class="none_style_list">
     <li>
