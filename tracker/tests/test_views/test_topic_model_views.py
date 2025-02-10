@@ -10,28 +10,45 @@ TOPIC_UPDATE_URL = reverse("tracker:topic_update", kwargs={"pk": 1})
 TOPIC_DELETE_URL = reverse("tracker:topic_delete", kwargs={"pk": 1})
 
 
-class PublicTopicTests(TestCase):
+class PublicTopicViewsTests(TestCase):
     def setUp(self):
         Topic.objects.create(name="test")
 
     def test_topic_list_login_required(self):
         response = self.client.get(TOPIC_LIST_URL)
         self.assertNotEquals(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={TOPIC_LIST_URL}"
+        )
 
     def test_topic_create_login_required(self):
         response = self.client.get(TOPIC_CREATE_URL)
         self.assertNotEquals(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={TOPIC_CREATE_URL}"
+        )
 
     def test_topic_update_login_required(self):
         response = self.client.get(TOPIC_UPDATE_URL)
         self.assertNotEquals(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={TOPIC_UPDATE_URL}"
+        )
 
     def test_topic_delete_login_required(self):
         response = self.client.get(TOPIC_DELETE_URL)
         self.assertNotEquals(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={TOPIC_DELETE_URL}"
+        )
 
 
-class PrivateTopicTests(TestCase):
+
+class PrivateTopicListViewTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
             username="test_user",
@@ -46,18 +63,6 @@ class PrivateTopicTests(TestCase):
 
     def test_topic_list_login_required_private(self):
         response = self.client.get(TOPIC_LIST_URL)
-        self.assertEqual(response.status_code, 200)
-
-    def test_topic_create_login_required_private(self):
-        response = self.client.get(TOPIC_CREATE_URL)
-        self.assertEqual(response.status_code, 200)
-
-    def test_topic_update_login_required_private(self):
-        response = self.client.get(TOPIC_UPDATE_URL)
-        self.assertEqual(response.status_code, 200)
-
-    def test_topic_delete_login_required_private(self):
-        response = self.client.get(TOPIC_DELETE_URL)
         self.assertEqual(response.status_code, 200)
 
     def test_topic_list(self):
@@ -89,3 +94,51 @@ class PrivateTopicTests(TestCase):
             len(response.context["topic_list"]),
             2
         )
+
+
+class PrivateTopicCreateViewTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_user",
+            password="test_password"
+        )
+        self.client.force_login(user)
+        topic = Topic.objects.create(
+            name="test",
+        )
+
+    def test_topic_create_login_required_private(self):
+        response = self.client.get(TOPIC_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+
+
+class PrivateTopicUpdateViewTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_user",
+            password="test_password"
+        )
+        self.client.force_login(user)
+        topic = Topic.objects.create(
+            name="test",
+        )
+
+    def test_topic_update_login_required_private(self):
+        response = self.client.get(TOPIC_UPDATE_URL)
+        self.assertEqual(response.status_code, 200)
+
+
+class PrivateTopicDeleteViewTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_user",
+            password="test_password"
+        )
+        self.client.force_login(user)
+        topic = Topic.objects.create(
+            name="test",
+        )
+
+    def test_topic_delete_login_required_private(self):
+        response = self.client.get(TOPIC_DELETE_URL)
+        self.assertEqual(response.status_code, 200)
