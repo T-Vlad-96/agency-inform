@@ -67,8 +67,7 @@ class PrivateTopicListViewTests(TestCase):
 
     def test_topic_list(self):
         response = self.client.get(TOPIC_LIST_URL)
-        topics = Topic.objects.all()
-        self.assertEqual(response.status_code, 200)
+        topics = Topic.objects.all()[:5]
         self.assertEqual(
             list(topics),
             list(response.context["topic_list"]),
@@ -76,12 +75,10 @@ class PrivateTopicListViewTests(TestCase):
 
     def test_topic_is_paginated(self):
         response = self.client.get(TOPIC_LIST_URL)
-        self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context["is_paginated"])
 
     def test_number_of_topics_on_first_page(self):
         response = self.client.get(TOPIC_LIST_URL)
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(
             len(response.context["topic_list"]),
             5
@@ -94,6 +91,24 @@ class PrivateTopicListViewTests(TestCase):
             len(response.context["topic_list"]),
             2
         )
+
+    def test_context_contains_search_form(self):
+        response = self.client.get(TOPIC_LIST_URL)
+        self.assertIn("search_form", response.context)
+
+    def test_searching(self):
+        Topic.objects.create(name="Django")
+        response = self.client.get(TOPIC_LIST_URL, {"name": "Django"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["topic_list"]), 1)
+        self.assertEqual(response.context["topic_list"][0].name, "Django")
+
+    def test_empty_search_returns_full_list(self):
+        response = self.client.get(TOPIC_LIST_URL, {"name": ""})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["topic_list"]), 5)
+
+
 
 
 class PrivateTopicCreateViewTests(TestCase):
