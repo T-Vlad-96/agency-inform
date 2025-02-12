@@ -165,6 +165,24 @@ class PrivateTopicUpdateViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+    def test_topic_update_redirects_to_topic_list(self):
+        response = self.client.post(TOPIC_UPDATE_URL, {"name": "test2"})
+        self.assertRedirects(
+            response,
+            TOPIC_LIST_URL
+        )
+
+    def test_topic_updated(self):
+        self.assertEqual(Topic.objects.get(pk=1).name, "test")
+        self.client.post(TOPIC_UPDATE_URL, {"name": "test2"})
+        self.assertEqual(Topic.objects.get(pk=1).name, "test2")
+
+    def test_topic_update_uses_correct_template(self):
+        response = self.client.get(TOPIC_UPDATE_URL)
+        self.assertTemplateUsed(response, "tracker/topic_form.html")
+
+
+
 class PrivateTopicDeleteViewTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
