@@ -143,7 +143,6 @@ class PrivateTopicCreateViewTests(TestCase):
         )
         self.assertEqual(Topic.objects.all()[1].name, "test2")
 
-
     def test_correct_template_used_create_view(self):
         response = self.client.get(TOPIC_CREATE_URL)
         self.assertTemplateUsed(response, "tracker/topic_form.html")
@@ -164,7 +163,6 @@ class PrivateTopicUpdateViewTests(TestCase):
         response = self.client.get(TOPIC_UPDATE_URL)
         self.assertEqual(response.status_code, 200)
 
-
     def test_topic_update_redirects_to_topic_list(self):
         response = self.client.post(TOPIC_UPDATE_URL, {"name": "test2"})
         self.assertRedirects(
@@ -182,7 +180,6 @@ class PrivateTopicUpdateViewTests(TestCase):
         self.assertTemplateUsed(response, "tracker/topic_form.html")
 
 
-
 class PrivateTopicDeleteViewTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
@@ -190,10 +187,39 @@ class PrivateTopicDeleteViewTests(TestCase):
             password="test_password"
         )
         self.client.force_login(user)
-        topic = Topic.objects.create(
-            name="test",
+        topic1 = Topic.objects.create(
+            name="test1",
+        )
+        topic2 = Topic.objects.create(
+            name="test2",
         )
 
     def test_topic_delete_login_required_private(self):
         response = self.client.get(TOPIC_DELETE_URL)
         self.assertEqual(response.status_code, 200)
+
+    def test_topic_delete_redirects_to_topic_list(self):
+        response = self.client.post(TOPIC_DELETE_URL)
+        self.assertRedirects(
+            response,
+            TOPIC_LIST_URL
+        )
+
+    def test_topic_deleted(self):
+        response = self.client.post(TOPIC_DELETE_URL)
+        self.assertEqual(
+            len(Topic.objects.all()),
+            1
+        )
+        self.assertEqual(
+            Topic.objects.all()[0].name,
+            "test2"
+        )
+
+    def test_topic_delete_uses_correct_template(self):
+        response = self.client.get(TOPIC_DELETE_URL)
+        self.assertTemplateUsed(
+            response,
+            "tracker/topic_delete_confirm.html"
+        )
+
