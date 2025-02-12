@@ -5,14 +5,13 @@ from django.urls import reverse
 
 from tracker.models import Redactor
 
-
 REDACTOR_LIST_URL = reverse("tracker:redactor_list")
 REDACTOR_CREATE_URL = reverse("tracker:redactor_create")
 REDACTOR_DETAIL_URL = reverse(
     "tracker:redactor_detail", kwargs={"pk": 1}
 )
 REDACTOR_UPDATE_URL = reverse(
-    "tracker:redactor_update",kwargs={"pk": 1}
+    "tracker:redactor_update", kwargs={"pk": 1}
 )
 REDACTOR_DELETE_URL = reverse(
     "tracker:redactor_delete", kwargs={"pk": 1}
@@ -93,4 +92,39 @@ class RedactorListViewPrivateTests(TestCase):
         self.assertEqual(
             len(response.context["redactor_list"]),
             3
+        )
+
+    def test_search_form_in_context(self):
+        response = self.client.get(REDACTOR_LIST_URL)
+        self.assertIn(
+            "search_form",
+            response.context
+        )
+
+    def test_searching(self):
+        get_user_model().objects.create_user(
+            username="admin",
+            password="test_password"
+        )
+        response = self.client.get(
+            REDACTOR_LIST_URL,
+            {"username": "admin"}
+        )
+        self.assertEqual(
+            len(response.context["redactor_list"]),
+            1
+        )
+        self.assertEqual(
+            response.context["redactor_list"][0].username,
+            "admin"
+        )
+
+    def test_empty_search_returns_full_list(self):
+        response = self.client.get(
+            REDACTOR_LIST_URL,
+            {"username": ""}
+        )
+        self.assertEqual(
+            len(response.context["redactor_list"]),
+            5
         )
