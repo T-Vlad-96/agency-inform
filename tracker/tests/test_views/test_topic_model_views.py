@@ -144,6 +144,11 @@ class PrivateTopicCreateViewTests(TestCase):
         self.assertEqual(Topic.objects.all()[1].name, "test2")
 
 
+    def test_correct_template_used_create_view(self):
+        response = self.client.get(TOPIC_CREATE_URL)
+        self.assertTemplateUsed(response, "tracker/topic_form.html")
+
+
 class PrivateTopicUpdateViewTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
