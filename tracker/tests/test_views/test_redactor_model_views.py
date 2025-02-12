@@ -128,3 +128,10 @@ class RedactorListViewPrivateTests(TestCase):
             len(response.context["redactor_list"]),
             5
         )
+
+    def test_redactor_list_uses_correct_template(self):
+        response = self.client.get(REDACTOR_LIST_URL)
+        self.assertTemplateUsed(
+            response,
+            "tracker/redactor_list.html"
+        )
