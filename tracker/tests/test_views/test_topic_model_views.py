@@ -119,13 +119,28 @@ class PrivateTopicCreateViewTests(TestCase):
         )
         self.client.force_login(user)
         topic = Topic.objects.create(
-            name="test",
+            name="test1",
         )
 
     def test_topic_create_login_required_private(self):
         response = self.client.get(TOPIC_CREATE_URL)
         self.assertEqual(response.status_code, 200)
 
+    def test_topic_create_redirect_to_topic_list(self):
+        response = self.client.post(TOPIC_CREATE_URL, {"name": "test2"})
+        self.assertRedirects(
+            response,
+            TOPIC_LIST_URL
+        )
+
+    def test_new_topic_created(self):
+        response = self.client.post(TOPIC_CREATE_URL, {"name": "test2"})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            len(Topic.objects.all()),
+            2
+        )
+        self.assertEqual(Topic.objects.all()[1].name, "test2")
 
 class PrivateTopicUpdateViewTests(TestCase):
     def setUp(self):
