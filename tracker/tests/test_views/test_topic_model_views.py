@@ -222,4 +222,3 @@ class PrivateTopicDeleteViewTests(TestCase):
             response,
             "tracker/topic_delete_confirm.html"
         )
-

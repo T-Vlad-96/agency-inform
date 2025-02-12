@@ -1,6 +1,5 @@
 from django.urls import path
 
-from tracker.models import Redactor, Newspaper
 from tracker.views import (
     index,
     TopicListView,
