@@ -61,4 +61,11 @@ class RedactorViewPublicTests(TestCase):
         )
 
 
+class RedactorListViewPrivateTests(TestCase):
 
+    def setUp(self):
+        user = User.objects.create_user(
+            username="test",
+            password="password"
+        )
+        self.client.force_login(user)
