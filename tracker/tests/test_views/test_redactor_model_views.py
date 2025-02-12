@@ -62,19 +62,21 @@ class RedactorViewPublicTests(TestCase):
 
 
 class RedactorListViewPrivateTests(TestCase):
-
-    def setUp(self):
-        user = get_user_model().objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
             username="test",
             password="password"
         )
-        self.client.force_login(user)
         number_of_users = 7
         for i in range(number_of_users):
             get_user_model().objects.create_user(
                 username=f"user_{i}",
                 password="password"
             )
+
+    def setUp(self):
+        self.client.force_login(self.user)
 
     def test_redactor_list_private(self):
         response = self.client.get(REDACTOR_LIST_URL)
