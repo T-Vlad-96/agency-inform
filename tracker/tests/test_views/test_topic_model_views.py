@@ -47,7 +47,6 @@ class PublicTopicViewsTests(TestCase):
         )
 
 
-
 class PrivateTopicListViewTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
@@ -108,7 +107,9 @@ class PrivateTopicListViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["topic_list"]), 5)
 
-
+    def test_correct_template_used_list_view(self):
+        response = self.client.get(TOPIC_LIST_URL)
+        self.assertTemplateUsed(response, "tracker/topic_list.html")
 
 
 class PrivateTopicCreateViewTests(TestCase):
@@ -141,6 +142,7 @@ class PrivateTopicCreateViewTests(TestCase):
             2
         )
         self.assertEqual(Topic.objects.all()[1].name, "test2")
+
 
 class PrivateTopicUpdateViewTests(TestCase):
     def setUp(self):
