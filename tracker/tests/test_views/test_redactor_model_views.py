@@ -188,3 +188,28 @@ class RedactorCreateVIewPrivateTests(TestCase):
             response,
             "tracker/redactor_form.html"
         )
+
+
+class RedactorUpdateViewPrivateTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_user",
+            password="test_password"
+        )
+        self.client.force_login(user)
+        user_to_update = get_user_model().objects.create_user(
+            username="new_user",
+            password="new_password1234",
+            first_name="user_first_name",
+            last_name="user_last_name",
+            years_of_experience=11
+        )
+
+    def test_redactor_update_private(self):
+        response = self.client.get(
+            REDACTOR_UPDATE_URL
+        )
+        self.assertEqual(
+            response.status_code,
+            200
+        )
