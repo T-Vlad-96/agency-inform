@@ -2,6 +2,8 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
+from tracker.models import Newspaper, Topic
+
 NEWSPAPER_LIST = reverse("tracker:newspaper_list")
 NEWSPAPER_CREATE = reverse("tracker:newspaper_create")
 NEWSPAPER_DETAIL = reverse(
@@ -64,11 +66,18 @@ class NewspaperListViewPrivateTests(TestCase):
             password="Test_Password123!"
         )
         number_of_newspapers = 7
+        topic = Topic.objects.create(name="test_topic")
+        publisher = get_user_model().objects.create_user(
+            username="test_publisher",
+            password="test_passwordABC1!"
+        )
         for i in range(number_of_newspapers):
-            get_user_model().objects.create_user(
-                username=f"user_{i}",
-                password="TestPassword123!"
+            newspaper = Newspaper.objects.create(
+                title=f"test_Title_{i}",
+                content="Text for the test newspaper."
             )
+            newspaper.topics.add(topic)
+            newspaper.publishers.add(publisher)
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -78,6 +87,20 @@ class NewspaperListViewPrivateTests(TestCase):
         self.assertEqual(
             response.status_code,
             200
+        )
+
+    def test_number_of_newspapers_on_first_page(self):
+        response = self.client.get(NEWSPAPER_LIST)
+        self.assertEqual(
+            len(response.context["newspaper_list"]),
+            5
+        )
+
+    def test_number_of_newspapers_on_second_page(self):
+        response = self.client.get(NEWSPAPER_LIST + "?page=2")
+        self.assertEqual(
+            len(response.context["newspaper_list"]),
+            2
         )
 
 

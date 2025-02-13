@@ -132,7 +132,7 @@ class RedactorDeleteView(LoginRequiredMixin, DeleteView):
 
 class NewspaperListView(LoginRequiredMixin, ListView):
     model = Newspaper
-    paginate_by = 3
+    paginate_by = 5
     search_form = NewspaperSearchForm
 
     def get_context_data(self, *, object_list=None, **kwargs):
