@@ -289,3 +289,17 @@ class RedactorDeleteViewPrivateTests(TestCase):
     def test_redactor_delete_view_private(self):
         response = self.client.get(REDACTOR_DELETE_URL)
         self.assertEqual(response.status_code, 200)
+
+    def test_redactor_deleted(self):
+        response = self.client.post(REDACTOR_DELETE_URL)
+        self.assertEqual(
+            len(get_user_model().objects.all()),
+            1
+        )
+
+    def test_redactor_deleted_redirect(self):
+        response = self.client.post(REDACTOR_DELETE_URL)
+        self.assertRedirects(
+            response,
+            REDACTOR_LIST_URL
+        )
