@@ -54,3 +54,30 @@ class NewspaperViewsPublicTests(TestCase):
             response.status_code,
             200
         )
+
+
+class NewspaperListViewPrivateTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="test_user",
+            password="Test_Password123!"
+        )
+        number_of_newspapers = 7
+        for i in range(number_of_newspapers):
+            get_user_model().objects.create_user(
+                username=f"user_{i}",
+                password="TestPassword123!"
+            )
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    def test_newspaper_list_private(self):
+        response = self.client.get(NEWSPAPER_LIST)
+        self.assertEqual(
+            response.status_code,
+            200
+        )
+
+
