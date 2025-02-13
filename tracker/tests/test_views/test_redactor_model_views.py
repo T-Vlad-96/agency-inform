@@ -12,7 +12,7 @@ REDACTOR_UPDATE_URL = reverse(
     "tracker:redactor_update", kwargs={"pk": 2}
 )
 REDACTOR_DELETE_URL = reverse(
-    "tracker:redactor_delete", kwargs={"pk": 1}
+    "tracker:redactor_delete", kwargs={"pk": 2}
 )
 
 
@@ -272,3 +272,20 @@ class RedactorUpdateViewPrivateTests(TestCase):
             response,
             "tracker/redactor_form.html"
         )
+
+
+class RedactorDeleteViewPrivateTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_username",
+            password="testPassword123!"
+        )
+        self.client.force_login(user)
+        user_to_delete = get_user_model().objects.create_user(
+            username="user_to_delete",
+            password="UserDeletePassword123!"
+        )
+
+    def test_redactor_delete_view_private(self):
+        response = self.client.get(REDACTOR_DELETE_URL)
+        self.assertEqual(response.status_code, 200)
