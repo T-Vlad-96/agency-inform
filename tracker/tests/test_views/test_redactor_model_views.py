@@ -18,7 +18,7 @@ REDACTOR_DELETE_URL = reverse(
 )
 
 
-class RedactorViewPublicTests(TestCase):
+class RedactorViewsPublicTests(TestCase):
 
     def test_redactor_list_public(self):
         response = self.client.get(REDACTOR_LIST_URL)
@@ -137,3 +137,18 @@ class RedactorListViewPrivateTests(TestCase):
             response,
             "tracker/redactor_list.html"
         )
+
+
+class RedactorCreateVIewPrivateTests(TestCase):
+    def setUp(self):
+        user = get_user_model().objects.create_user(
+            username="test_user",
+            password="test_password"
+        )
+        self.client.force_login(user)
+
+    def test_redactor_create_private(self):
+        response = self.client.get(REDACTOR_CREATE_URL)
+        self.assertEqual(response.status_code, 200)
+
+
