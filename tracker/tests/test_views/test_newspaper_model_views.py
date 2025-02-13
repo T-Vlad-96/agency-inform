@@ -142,3 +142,23 @@ class NewspaperListViewPrivateTests(TestCase):
             "tracker/newspaper_list.html"
         )
 
+
+class NewspaperCreateViewPrivateTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="test_user",
+            password="TestUserPassword123!"
+        )
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    def test_newspaper_create_private(self):
+        response = self.client.get(NEWSPAPER_CREATE)
+        self.assertEqual(
+            response.status_code,
+            200
+        )
+
+
