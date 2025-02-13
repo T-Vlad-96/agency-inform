@@ -296,10 +296,21 @@ class RedactorDeleteViewPrivateTests(TestCase):
             len(get_user_model().objects.all()),
             1
         )
+        self.assertEqual(
+            get_user_model().objects.all()[0].username,
+            "test_username"
+        )
 
     def test_redactor_deleted_redirect(self):
         response = self.client.post(REDACTOR_DELETE_URL)
         self.assertRedirects(
             response,
             REDACTOR_LIST_URL
+        )
+
+    def test_redactor_delete_uses_correct_template(self):
+        response = self.client.get(REDACTOR_DELETE_URL)
+        self.assertTemplateUsed(
+            response,
+            "tracker/redactor_delete_confirm.html"
         )
