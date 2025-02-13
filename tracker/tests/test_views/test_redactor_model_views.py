@@ -1,9 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-
-from tracker.models import Redactor
 
 REDACTOR_LIST_URL = reverse("tracker:redactor_list")
 REDACTOR_CREATE_URL = reverse("tracker:redactor_create")
@@ -16,6 +13,16 @@ REDACTOR_UPDATE_URL = reverse(
 REDACTOR_DELETE_URL = reverse(
     "tracker:redactor_delete", kwargs={"pk": 1}
 )
+
+new_user_data = {
+    "username": "test_user2",
+    "password1": "TestPassword123!",
+    "password2": "TestPassword123!",
+    "first_name": "Test",
+    "last_name": "User",
+    "email": "test@example.com",
+    "years_of_experience": 5,
+}
 
 
 class RedactorViewsPublicTests(TestCase):
@@ -154,33 +161,17 @@ class RedactorCreateVIewPrivateTests(TestCase):
     def test_redactor_create_view_redirect(self):
         response = self.client.post(
             REDACTOR_CREATE_URL,
-            {
-                "username": "test_user2",
-                "password1": "TestPassword123!",
-                "password2": "TestPassword123!",
-                "first_name": "Test",
-                "last_name": "User",
-                "email": "test@example.com",
-                "years_of_experience": 5,
-            }
+            new_user_data
         )
         self.assertRedirects(
-        response,
-        REDACTOR_LIST_URL
+            response,
+            REDACTOR_LIST_URL
         )
 
     def test_new_redactor_created(self):
         response = self.client.post(
             REDACTOR_CREATE_URL,
-            {
-                "username": "test_user2",
-                "password1": "TestPassword123!",
-                "password2": "TestPassword123!",
-                "first_name": "Test",
-                "last_name": "User",
-                "email": "test@example.com",
-                "years_of_experience": 5,
-            }
+            new_user_data
         )
         self.assertEqual(
             len(get_user_model().objects.all()),
@@ -191,3 +182,9 @@ class RedactorCreateVIewPrivateTests(TestCase):
             "test_user2"
         )
 
+    def test_redactor_create_uses_correct_template(self):
+        response = self.client.get(REDACTOR_CREATE_URL)
+        self.assertTemplateUsed(
+            response,
+            "tracker/redactor_form.html"
+        )
