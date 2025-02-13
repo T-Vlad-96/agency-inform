@@ -181,6 +181,10 @@ class NewspaperCreateViewPrivateTests(TestCase):
             len(Newspaper.objects.all()),
             1
         )
+        self.assertEqual(
+            Newspaper.objects.get(pk=1).title,
+            "Test Title"
+        )
 
     def test_newspaper_created_redirects(self):
         response = self.client.post(
@@ -190,4 +194,11 @@ class NewspaperCreateViewPrivateTests(TestCase):
         self.assertRedirects(
             response,
             NEWSPAPER_LIST
+        )
+
+    def test_newspaper_create_uses_correct_template(self):
+        response = self.client.get(NEWSPAPER_CREATE)
+        self.assertTemplateUsed(
+            response,
+            "tracker/newspaper_form.html"
         )
