@@ -150,6 +150,17 @@ class NewspaperCreateViewPrivateTests(TestCase):
             username="test_user",
             password="TestUserPassword123!"
         )
+        cls.topic = Topic.objects.create(name="test_topic")
+        cls.publisher = get_user_model().objects.create_user(
+            username="test_publisher",
+            password="TestPassword123!"
+        )
+        cls.data_for_newspaper_creating = {
+            "title": "Test Title",
+            "content": "Test content",
+            "topics": [cls.topic.id],
+            "publishers": [cls.publisher.id]
+        }
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -161,4 +172,22 @@ class NewspaperCreateViewPrivateTests(TestCase):
             200
         )
 
+    def test_newspaper_created(self):
+        response = self.client.post(
+            NEWSPAPER_CREATE,
+            self.data_for_newspaper_creating
+        )
+        self.assertEqual(
+            len(Newspaper.objects.all()),
+            1
+        )
 
+    def test_newspaper_created_redirects(self):
+        response = self.client.post(
+            NEWSPAPER_CREATE,
+            self.data_for_newspaper_creating
+        )
+        self.assertRedirects(
+            response,
+            NEWSPAPER_LIST
+        )
