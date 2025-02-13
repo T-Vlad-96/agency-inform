@@ -258,3 +258,10 @@ class RedactorUpdateViewPrivateTests(TestCase):
         )
         self.assertEqual(updated_user.years_of_experience, 11)
 
+    def test_redactor_update_uses_correct_template(self):
+        response = self.client.get(REDACTOR_UPDATE_URL)
+        self.assertTemplateUsed(
+            response,
+            "tracker/redactor_form.html"
+        )
+
