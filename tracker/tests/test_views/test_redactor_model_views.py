@@ -142,7 +142,7 @@ class RedactorListViewPrivateTests(TestCase):
 class RedactorCreateVIewPrivateTests(TestCase):
     def setUp(self):
         user = get_user_model().objects.create_user(
-            username="test_user",
+            username="test_user1",
             password="test_password"
         )
         self.client.force_login(user)
@@ -151,4 +151,43 @@ class RedactorCreateVIewPrivateTests(TestCase):
         response = self.client.get(REDACTOR_CREATE_URL)
         self.assertEqual(response.status_code, 200)
 
+    def test_redactor_create_view_redirect(self):
+        response = self.client.post(
+            REDACTOR_CREATE_URL,
+            {
+                "username": "test_user2",
+                "password1": "TestPassword123!",
+                "password2": "TestPassword123!",
+                "first_name": "Test",
+                "last_name": "User",
+                "email": "test@example.com",
+                "years_of_experience": 5,
+            }
+        )
+        self.assertRedirects(
+        response,
+        REDACTOR_LIST_URL
+        )
+
+    def test_new_redactor_created(self):
+        response = self.client.post(
+            REDACTOR_CREATE_URL,
+            {
+                "username": "test_user2",
+                "password1": "TestPassword123!",
+                "password2": "TestPassword123!",
+                "first_name": "Test",
+                "last_name": "User",
+                "email": "test@example.com",
+                "years_of_experience": 5,
+            }
+        )
+        self.assertEqual(
+            len(get_user_model().objects.all()),
+            2
+        )
+        self.assertEqual(
+            get_user_model().objects.all()[1].username,
+            "test_user2"
+        )
 
