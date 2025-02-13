@@ -8,21 +8,11 @@ REDACTOR_DETAIL_URL = reverse(
     "tracker:redactor_detail", kwargs={"pk": 1}
 )
 REDACTOR_UPDATE_URL = reverse(
-    "tracker:redactor_update", kwargs={"pk": 1}
+    "tracker:redactor_update", kwargs={"pk": 2}
 )
 REDACTOR_DELETE_URL = reverse(
     "tracker:redactor_delete", kwargs={"pk": 1}
 )
-
-new_user_data = {
-    "username": "test_user2",
-    "password1": "TestPassword123!",
-    "password2": "TestPassword123!",
-    "first_name": "Test",
-    "last_name": "User",
-    "email": "test@example.com",
-    "years_of_experience": 5,
-}
 
 
 class RedactorViewsPublicTests(TestCase):
@@ -147,6 +137,18 @@ class RedactorListViewPrivateTests(TestCase):
 
 
 class RedactorCreateVIewPrivateTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.new_user_data = {
+            "username": "test_user2",
+            "password1": "TestPassword123!",
+            "password2": "TestPassword123!",
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "test@example.com",
+            "years_of_experience": 5,
+        }
+
     def setUp(self):
         user = get_user_model().objects.create_user(
             username="test_user1",
@@ -161,7 +163,7 @@ class RedactorCreateVIewPrivateTests(TestCase):
     def test_redactor_create_view_redirect(self):
         response = self.client.post(
             REDACTOR_CREATE_URL,
-            new_user_data
+            self.new_user_data
         )
         self.assertRedirects(
             response,
@@ -171,7 +173,7 @@ class RedactorCreateVIewPrivateTests(TestCase):
     def test_new_redactor_created(self):
         response = self.client.post(
             REDACTOR_CREATE_URL,
-            new_user_data
+            self.new_user_data
         )
         self.assertEqual(
             len(get_user_model().objects.all()),
@@ -191,6 +193,23 @@ class RedactorCreateVIewPrivateTests(TestCase):
 
 
 class RedactorUpdateViewPrivateTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user_to_update = {
+            "username": "new_user",
+            "password": "new_password1234",
+            "first_name": "user_first_name",
+            "last_name": "user_last_name",
+            "years_of_experience": 7
+        }
+
+        cls.user_updated = {
+            "username": "new_user_updated",
+            "first_name": "user_first_name_updated",
+            "last_name": "user_last_name_updated",
+            "years_of_experience": 11
+        }
+
     def setUp(self):
         user = get_user_model().objects.create_user(
             username="test_user",
@@ -198,11 +217,7 @@ class RedactorUpdateViewPrivateTests(TestCase):
         )
         self.client.force_login(user)
         user_to_update = get_user_model().objects.create_user(
-            username="new_user",
-            password="new_password1234",
-            first_name="user_first_name",
-            last_name="user_last_name",
-            years_of_experience=11
+            **self.user_to_update
         )
 
     def test_redactor_update_private(self):
@@ -213,3 +228,33 @@ class RedactorUpdateViewPrivateTests(TestCase):
             response.status_code,
             200
         )
+
+    def test_redactor_updated_redirect(self):
+        response = self.client.post(
+            REDACTOR_UPDATE_URL,
+            self.user_updated
+        )
+        self.assertRedirects(
+            response,
+            REDACTOR_LIST_URL
+        )
+
+    def test_redactor_updated(self):
+        response = self.client.post(
+            REDACTOR_UPDATE_URL,
+            self.user_updated
+        )
+        updated_user = get_user_model().objects.get(pk=2)
+        self.assertEqual(updated_user.username,
+            "new_user_updated"
+        )
+        self.assertEqual(
+            updated_user.first_name,
+            "user_first_name_updated"
+        )
+        self.assertEqual(
+            updated_user.last_name,
+            "user_last_name_updated"
+        )
+        self.assertEqual(updated_user.years_of_experience, 11)
+
