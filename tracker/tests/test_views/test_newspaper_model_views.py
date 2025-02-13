@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.forms import Form
 
 from tracker.models import Newspaper, Topic
 
@@ -103,4 +104,34 @@ class NewspaperListViewPrivateTests(TestCase):
             2
         )
 
+    def test_search_form_in_context(self):
+        response = self.client.get(NEWSPAPER_LIST)
+        self.assertIn("search_form", response.context)
+
+    def test_search_form_is_django_forms_Form_instance(self):
+        response = self.client.get(NEWSPAPER_LIST)
+        self.assertIsInstance(
+            response.context["search_form"],
+            Form
+        )
+
+    def test_searching(self):
+        response = self.client.get(
+            NEWSPAPER_LIST, {"title": "test_Title_1"}
+        )
+        self.assertEqual(
+            len(response.context["newspaper_list"]),
+            1
+        )
+        self.assertEqual(
+            response.context["newspaper_list"][0].title,
+            "test_Title_1"
+        )
+
+    def test_empty_search_returns_full_list(self):
+        response = self.client.get(NEWSPAPER_LIST, {"title": ""})
+        self.assertEqual(
+            len(response.context["newspaper_list"]),
+            5
+        )
 
