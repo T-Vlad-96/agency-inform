@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
 from django.test import TestCase
 from django.urls import reverse
 
@@ -160,6 +161,13 @@ class RedactorCreateVIewPrivateTests(TestCase):
         response = self.client.get(REDACTOR_CREATE_URL)
         self.assertEqual(response.status_code, 200)
 
+    def test_form_class_is_user_creation_form_instance(self):
+        response = self.client.get(REDACTOR_CREATE_URL)
+        self.assertIsInstance(
+            response.context["form"],
+            UserCreationForm
+        )
+
     def test_redactor_create_view_redirect(self):
         response = self.client.post(
             REDACTOR_CREATE_URL,
@@ -246,8 +254,8 @@ class RedactorUpdateViewPrivateTests(TestCase):
         )
         updated_user = get_user_model().objects.get(pk=2)
         self.assertEqual(updated_user.username,
-            "new_user_updated"
-        )
+                         "new_user_updated"
+                         )
         self.assertEqual(
             updated_user.first_name,
             "user_first_name_updated"
@@ -264,4 +272,3 @@ class RedactorUpdateViewPrivateTests(TestCase):
             response,
             "tracker/redactor_form.html"
         )
-
