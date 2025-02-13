@@ -202,3 +202,36 @@ class NewspaperCreateViewPrivateTests(TestCase):
             response,
             "tracker/newspaper_form.html"
         )
+
+
+class NewspaperUpdateViewPrivateTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = get_user_model().objects.create_user(
+            username="test_username",
+            password="TestPassword123!"
+        )
+        cls.topic = Topic.objects.create(name="test_topic")
+        cls.publisher = get_user_model().objects.create_user(
+            username="test_publisher",
+            password="TestPassword123!"
+        )
+        cls.newspaper_data = {
+            "title": "Test Title",
+            "content": "Test content",
+        }
+        cls.newspaper = Newspaper.objects.create(
+            **cls.newspaper_data
+        )
+        cls.newspaper.topics.add(cls.topic)
+        cls.newspaper.publishers.add(cls.publisher)
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    def test_newspaper_update_private(self):
+        response = self.client.get(NEWSPAPER_UPDATE)
+        self.assertEqual(
+            response.status_code,
+            200
+        )
