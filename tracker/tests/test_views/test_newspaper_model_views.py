@@ -235,3 +235,33 @@ class NewspaperUpdateViewPrivateTests(TestCase):
             response.status_code,
             200
         )
+
+    def test_newspaper_updated(self):
+        response = self.client.post(
+            NEWSPAPER_UPDATE,
+            {
+                "title": "updated title",
+                "content": "updated content",
+                "topics": f"{self.topic.id}",
+                "publishers": f"{self.publisher.id}"
+            }
+        )
+        self.assertEqual(
+            Newspaper.objects.get(pk=1).title,
+            "updated title"
+        )
+
+    def test_newspaper_updated_redirects(self):
+        response = self.client.post(
+            NEWSPAPER_UPDATE,
+            {
+                "title": "updated title",
+                "content": "updated content",
+                "topics": f"{self.topic.id}",
+                "publishers": f"{self.publisher.id}"
+            }
+        )
+        self.assertRedirects(
+            response,
+            NEWSPAPER_LIST
+        )
