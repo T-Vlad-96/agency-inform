@@ -251,7 +251,7 @@ class NewspaperUpdateViewPrivateTests(TestCase):
             "updated title"
         )
 
-    def test_newspaper_updated_redirects_to_topic_list(self):
+    def test_newspaper_updated_redirects_to_newspaper_list(self):
         response = self.client.post(
             NEWSPAPER_UPDATE,
             {
@@ -315,4 +315,30 @@ class NewspaperDeleteViewPrivateTests(TestCase):
         self.assertEqual(
             response.status_code,
             200
+        )
+
+    def test_newspaper_deleted(self):
+        self.assertEqual(
+            len(Newspaper.objects.all()),
+            2
+        )
+        response = self.client.post(NEWSPAPER_DELETE)
+        self.assertEqual(
+            len(Newspaper.objects.all()),
+            1
+        )
+        self.assertEqual(
+            Newspaper.objects.all()[0].title,
+            "Second newspaper title"
+        )
+
+    def test_newspaper_deleted_redirects_to_newspaper_list(self):
+        response = self.client.post(NEWSPAPER_DELETE)
+        self.assertEqual(
+            response.status_code,
+            302
+        )
+        self.assertRedirects(
+            response,
+            NEWSPAPER_LIST
         )
