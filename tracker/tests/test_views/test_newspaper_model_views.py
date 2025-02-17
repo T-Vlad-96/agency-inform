@@ -251,7 +251,7 @@ class NewspaperUpdateViewPrivateTests(TestCase):
             "updated title"
         )
 
-    def test_newspaper_updated_redirects(self):
+    def test_newspaper_updated_redirects_to_topic_list(self):
         response = self.client.post(
             NEWSPAPER_UPDATE,
             {
@@ -264,4 +264,19 @@ class NewspaperUpdateViewPrivateTests(TestCase):
         self.assertRedirects(
             response,
             NEWSPAPER_LIST
+        )
+
+    def test_newspaper_update_uses_correct_template(self):
+        response = self.client.get(
+            NEWSPAPER_UPDATE,
+            {
+                "title": "updated title",
+                "content": "updated content",
+                "topics": f"{self.topic.id}",
+                "publishers": f"{self.publisher.id}"
+            }
+        )
+        self.assertTemplateUsed(
+            response,
+            "tracker/newspaper_form.html"
         )
