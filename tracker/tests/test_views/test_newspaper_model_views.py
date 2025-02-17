@@ -342,3 +342,10 @@ class NewspaperDeleteViewPrivateTests(TestCase):
             response,
             NEWSPAPER_LIST
         )
+
+    def test_newspaper_delete_uses_correct_template(self):
+        response = self.client.get(NEWSPAPER_DELETE)
+        self.assertTemplateUsed(
+            response,
+            "tracker/newspaper_delete_confirm.html"
+        )
